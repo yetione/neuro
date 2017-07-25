@@ -3,7 +3,7 @@
 
 from os import path, mkdir, unlink
 
-from PyQt5.QtGui import QImage, QPainter, QColor
+from PyQt5.QtGui import QImage, QPainter, QColor, qRgb
 from PyQt5 import QtCore
 from time import time
 from random import randint
@@ -21,7 +21,7 @@ class School:
         if not path.exists(self.imagesDir):
             mkdir(self.imagesDir, 0o755)
 
-        self.clearDataAfterClose = False
+        self.clearDataAfterClose = True
         self.files = []
         pass
 
@@ -33,17 +33,21 @@ class School:
                 unlink(absPath)
 
     def generateImage(self, letter, font):
-        image = QImage(30, 30, QImage.Format_Alpha8)
-        image.fill(QtCore.Qt.transparent)
+        image = QImage(30, 30, QImage.Format_ARGB32_Premultiplied)
+
+        image.fill(QColor(255, 255, 255, 255))
         painter = QPainter(image)
-        painter.setPen(QColor('black'))
+        painter.setPen(QColor(0, 0, 0, 255))
         painter.setFont(font)
-        painter.drawText(image.rect(), QtCore.Qt.AlignCenter, letter)
+        rect = image.rect()
+        painter.drawText(rect, QtCore.Qt.AlignCenter, letter.text())
         painter.end()
-        filename = letter+'.'+str(time()) + str(randint(0, 1000)) + '.png'
+
+        filename = letter.text()+'.'+str(time()) + str(randint(0, 1000)) + '.png'
         image.save(path.join(self.imagesDir, filename))
         self.files.append(path.join(self.imagesDirName, filename))
         return path.join(self.imagesDir, filename)
+
 
     #def handle(self):
 

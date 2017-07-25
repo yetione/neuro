@@ -18,8 +18,9 @@ class Neuron:
 
     def random_weight(self):
         for r in range(0, self.height):
+            self.weight.append([])
             for c in range(0, self.width):
-                self.weight[r][c] = randint(0, 10)
+                self.weight[r].append(randint(0, 10))
 
     def transfer_hard(self, input):
         power = 0

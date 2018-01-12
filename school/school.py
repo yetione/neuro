@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from os import path, mkdir, unlink
+from os import path, mkdir, unlink, walk
 
 from PyQt5.QtGui import QImage, QPainter, QColor, qRgb
 from PyQt5 import QtCore
@@ -23,6 +23,7 @@ class School:
 
         self.clearDataAfterClose = True
         self.files = []
+        self.supported_symbols = '0123456789abcdefghijklmnopqrstuvwxyz'
         pass
 
     def __del__(self):
@@ -32,6 +33,10 @@ class School:
                 print(absPath)
                 unlink(absPath)
 
+    def generate_random_image(self, font):
+        letter = self.supported_symbols[randint(0, len(self.supported_symbols) - 1)]
+        return self.generateImage(letter, font)
+
     def generateImage(self, letter, font):
         image = QImage(30, 30, QImage.Format_ARGB32_Premultiplied)
 
@@ -40,13 +45,21 @@ class School:
         painter.setPen(QColor(0, 0, 0, 255))
         painter.setFont(font)
         rect = image.rect()
-        painter.drawText(rect, QtCore.Qt.AlignCenter, letter.text())
+        painter.drawText(rect, QtCore.Qt.AlignCenter, letter)
         painter.end()
 
-        filename = letter.text()+'.'+str(time()) + str(randint(0, 1000)) + '.png'
+        filename = letter+'.'+str(time()) + str(randint(0, 1000)) + '.png'
         image.save(path.join(self.imagesDir, filename))
         self.files.append(path.join(self.imagesDirName, filename))
         return path.join(self.imagesDir, filename)
+
+    @staticmethod
+    def get_images():
+        p = path.dirname(__file__) + '/images'
+        files = []
+        for (dirpath, dirnames, filenames) in walk(p):
+            files += map(lambda f: dirpath+'/'+f, filenames)
+        return files
 
 
     #def handle(self):

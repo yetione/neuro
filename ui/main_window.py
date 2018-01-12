@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'interface/mainwindow.ui'
+# Form implementation generated from reading ui file '/home/aleksandr/PycharmProjects/neuro/interface/mainwindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.9
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -22,7 +22,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.formLayout = QtWidgets.QFormLayout()
-        self.formLayout.setContentsMargins(11, 11, 11, 11)
         self.formLayout.setSpacing(6)
         self.formLayout.setObjectName("formLayout")
         self.fontComboBox = QtWidgets.QFontComboBox(self.horizontalLayoutWidget)
@@ -33,19 +32,29 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.lineEdit)
         self.pushButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.pushButton.setObjectName("pushButton")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.pushButton)
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.pushButton)
+        self.pushButton_2 = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.pushButton_2)
+        self.pushButton_3 = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.pushButton_3)
+        self.tableWidget = QtWidgets.QTableWidget(self.horizontalLayoutWidget)
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setRowCount(0)
+        self.formLayout.setWidget(4, QtWidgets.QFormLayout.SpanningRole, self.tableWidget)
         self.horizontalLayout.addLayout(self.formLayout)
         self.graphicsView = QtWidgets.QGraphicsView(self.horizontalLayoutWidget)
         self.graphicsView.setObjectName("graphicsView")
         self.horizontalLayout.addWidget(self.graphicsView)
         self.verticalLayout = QtWidgets.QVBoxLayout()
-        self.verticalLayout.setContentsMargins(11, 11, 11, 11)
         self.verticalLayout.setSpacing(6)
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 904, 22))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 904, 25))
         self.menuBar.setObjectName("menuBar")
         MainWindow.setMenuBar(self.menuBar)
         self.mainToolBar = QtWidgets.QToolBar(MainWindow)
@@ -62,4 +71,16 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "Ok"))
+        self.pushButton_2.setText(_translate("MainWindow", "Generate Images"))
+        self.pushButton_3.setText(_translate("MainWindow", "Update Table"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
 

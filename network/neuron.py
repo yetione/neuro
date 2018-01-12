@@ -7,6 +7,7 @@ class Neuron:
     height = 30
     width = 30
     minimum = 50
+
     def __init__(self, network, width=width, height=height, minimum=minimum):
         self.network = network
         self.width = width
@@ -14,7 +15,6 @@ class Neuron:
         self.minimum = minimum
         self.weight = []
         self.random_weight()
-
 
     def random_weight(self):
         for r in range(0, self.height):

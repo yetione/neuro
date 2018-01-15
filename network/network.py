@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 from typing import List
 
+from PyQt5.QtGui import qRgb, QColor
+
 from network.neuron import Neuron
 import _pickle as cPickle
 from os import path
@@ -19,7 +21,7 @@ class Network(object):
         self.neurons = {}
         self.neuronWidth = 30
         self.neuronHeight = 30
-        self.neuronMinimum = 50
+        self.neuronMinimum = 10000
 
         self.memory_file = memory_file
         self.load()
@@ -29,8 +31,10 @@ class Network(object):
         for r in range(0, self.neuronHeight):
             pixel_map.append([])
             for c in range(0, self.neuronWidth):
-                pixel_data = image.getpixel((r, c))
-                #pixel_map[r].append(pixel_data[0] + pixel_data[1] + pixel_data[2])
+                pixel_data = image.pixel(r, c)
+                # pixel_color = QColor(pixel_data)
+                # print(pixel_color.red(), pixel_color.green(), pixel_color.blue(), pixel_color.alpha())
+                # pixel_map[r].append(pixel_data[0] + pixel_data[1] + pixel_data[2])
                 pixel_map[r].append(pixel_data)
         return pixel_map
 
@@ -49,9 +53,10 @@ class Network(object):
             output.append(neuron.transfer(input))
         return output
 
-    def study(self, input, correctAnswer):
+    def study1(self, input, correctAnswer):
         self.neurons[correctAnswer] = 1
         correctOutput = []
+
 
         output = self.handle_hard(input)
         while not self.compare_array(correctOutput, output):
@@ -59,6 +64,20 @@ class Network(object):
                 dif = correctOutput[x] - output[x]
                 self.neurons[x].change_weight(input, dif)
             output = self.handle_hard(input)
+
+    def study(self, image_data, correct_answer):
+        for letter in self.neurons:
+            neuron = self.neurons[letter]
+            try:
+                neuron_result = neuron.transfer(image_data)
+            except OverflowError:
+                print(letter, correct_answer)
+            if neuron_result == 1 and letter != correct_answer:
+                neuron.change_weight(image_data, -1)
+            if neuron_result != 1 and letter == correct_answer:
+                neuron.change_weight(image_data, 2)
+            #print(neuron.weight)
+            # print(neuron)
 
     def add_neuron(self, symbol, neuron=None):
         if neuron is None:

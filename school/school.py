@@ -53,6 +53,25 @@ class School:
         self.files.append(path.join(self.imagesDirName, filename))
         return path.join(self.imagesDir, filename)
 
+    def study(self, image):
+        image_path = path.join(self.imagesDir, image)
+        letter = image.split('.')[0]
+        if letter not in self.network.neurons:
+            self.network.add_neuron(letter)
+        image_file = open(image_path, 'rb')
+        image_content = image_file.read()
+        qImage = QImage()
+        qImage.loadFromData(image_content)
+        image_data = self.network.read_image(qImage)
+        self.network.study(image_data, letter)
+
+        #print(letter)
+        #print(image_path)
+
+
+
+
+
     @staticmethod
     def get_images():
         p = path.dirname(__file__) + '/images'

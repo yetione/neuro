@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 from random import randint
-
+from math import exp
 
 class Neuron:
     height = 30
@@ -20,7 +20,7 @@ class Neuron:
         for r in range(0, self.height):
             self.weight.append([])
             for c in range(0, self.width):
-                self.weight[r].append(randint(0, 10))
+                self.weight[r].append(randint(0, 100))
 
     def transfer_hard(self, input):
         power = 0
@@ -33,8 +33,12 @@ class Neuron:
         power = 0
         for r in range(0, self.height):
             for c in range(0, self.width):
-                power += self.weight[r][c] * input[r][c]
-        return power
+                power += self.weight[r][c] * (input[r][c]/1000.0)
+        if power <= 0:
+            print(power, self.weight)
+            return  0
+        return 1.0/(1+exp(-1*power))
+        # return power/1000.0
 
     def change_weight(self, input, dif):
         for r in range(0, self.height):

@@ -23,10 +23,11 @@ class Window(QMainWindow):
         super(Window, self).__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-
+        self.ui.lineEdit_2.setText('12')
         self.ui.pushButton.clicked.connect(self.generateImage)
         self.ui.pushButton_2.clicked.connect(self.generate_random_image)
         self.ui.pushButton_3.clicked.connect(self.update_images_table)
+        self.ui.pushButton_4.clicked.connect(self.start_study)
 
         self.network = Network()
         self.school = School(self.network)
@@ -34,12 +35,16 @@ class Window(QMainWindow):
     def generate_random_image(self):
         current_font = self.ui.fontComboBox.currentFont()
         length = self.ui.fontComboBox.count()
-        count = 12
+        try:
+            count = int(self.ui.lineEdit_2.text())
+        except ValueError:
+            count = 12
         for x in range(0, count):
             self.ui.fontComboBox.setCurrentIndex(randint(0, length))
             font = self.ui.fontComboBox.currentFont()
             self.school.generate_random_image(font)
         self.ui.fontComboBox.setFont(current_font)
+        self.update_images_table()
 
 
     def update_images_table(self):
@@ -65,18 +70,27 @@ class Window(QMainWindow):
 
     def letter_double_click(self, item):
         print('doubleclick')
-        print(item)
+        print(item.column())
+        print(item.row())
 
     def generateImage(self):
         """
         :var QString letters
-        :return:
         """
         letters = self.ui.lineEdit.displayText()
+        letters = list(letters)
+        font = self.ui.fontComboBox.currentFont()
+        for x in letters:
+            self.school.generateImage(x, font)
+        self.update_images_table()
 
-        # :var QFont
-        self.generate_random_images(12)
-        pass
+    def start_study(self):
+        table = self.ui.tableWidget
+        for x in range(0, table.rowCount()):
+            letter = table.item(x, 0)
+            image_name = table.item(x, 1).text()
+            self.school.study(image_name)
+            #print(letter.text())
 
 
 

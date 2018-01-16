@@ -50,6 +50,12 @@ class Ui_MainWindow(object):
         self.lineEdit_2 = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.lineEdit_2)
+        self.pushButton_5 = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.pushButton_5.setObjectName("pushButton_5")
+        self.formLayout.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.pushButton_5)
+        self.pushButton_6 = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.pushButton_6.setObjectName("pushButton_6")
+        self.formLayout.setWidget(8, QtWidgets.QFormLayout.FieldRole, self.pushButton_6)
         self.horizontalLayout.addLayout(self.formLayout)
         self.graphicsView = QtWidgets.QGraphicsView(self.horizontalLayoutWidget)
         self.graphicsView.setObjectName("graphicsView")
@@ -81,6 +87,8 @@ class Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "Update Table"))
         self.pushButton_4.setText(_translate("MainWindow", "Start"))
         self.lineEdit_2.setToolTip(_translate("MainWindow", "Random Images COunt"))
+        self.pushButton_5.setText(_translate("MainWindow", "Save Network"))
+        self.pushButton_6.setText(_translate("MainWindow", "Load Network"))
 
 
 if __name__ == "__main__":

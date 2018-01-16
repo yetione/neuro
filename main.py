@@ -28,9 +28,17 @@ class Window(QMainWindow):
         self.ui.pushButton_2.clicked.connect(self.generate_random_image)
         self.ui.pushButton_3.clicked.connect(self.update_images_table)
         self.ui.pushButton_4.clicked.connect(self.start_study)
+        self.ui.pushButton_5.clicked.connect(self.save_network)
+        self.ui.pushButton_6.clicked.connect(self.load_network)
 
         self.network = Network()
         self.school = School(self.network)
+
+    def save_network(self):
+        self.school.network.save_to_file()
+
+    def load_network(self):
+        self.school.network.load_from_file()
 
     def generate_random_image(self):
         current_font = self.ui.fontComboBox.currentFont()
@@ -69,9 +77,23 @@ class Window(QMainWindow):
         pass
 
     def letter_double_click(self, item):
-        print('doubleclick')
-        print(item.column())
-        print(item.row())
+        letterCell = self.ui.tableWidget.item(item.row(), 0)
+        print('Letter: '+letterCell.text())
+        f = self.ui.tableWidget.item(item.row(), 1)
+        file_name = f.text()
+        image_path = path.join(self.school.imagesDir, file_name)
+        image_file = open(image_path, 'rb')
+        image_content = image_file.read()
+        qImage = QImage()
+        qImage.loadFromData(image_content)
+        network = self.school.network
+        image_data = network.read_image(qImage)
+
+        network_answer = network.get_answer(image_data)
+        print('Network thinks that is '+network_answer[1]+' '+str(network_answer[0]))
+
+
+
 
     def generateImage(self):
         """
@@ -86,11 +108,12 @@ class Window(QMainWindow):
 
     def start_study(self):
         table = self.ui.tableWidget
-        for x in range(0, table.rowCount()):
-            letter = table.item(x, 0)
-            image_name = table.item(x, 1).text()
-            self.school.study(image_name)
-            #print(letter.text())
+        for y in range(0, 100):
+            for x in range(0, table.rowCount()):
+                # letter = table.item(x, 0)
+                image_name = table.item(x, 1).text()
+                self.school.study(image_name)
+                # print(letter.text())
 
 
 

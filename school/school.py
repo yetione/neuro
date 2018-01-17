@@ -30,7 +30,7 @@ class School:
         if self.clearDataAfterClose:
             for f in self.files:
                 absPath = self.dir + '/' + f
-                print(absPath)
+                # print(absPath)
                 unlink(absPath)
 
     def generate_random_image(self, font):
@@ -68,10 +68,6 @@ class School:
         #print(letter)
         #print(image_path)
 
-
-
-
-
     @staticmethod
     def get_images():
         p = path.dirname(__file__) + '/images'
@@ -80,6 +76,4 @@ class School:
             files += map(lambda f: dirpath+'/'+f, filenames)
         return files
 
-
-    #def handle(self):
 

@@ -58,13 +58,10 @@ class Window(QMainWindow):
     def update_images_table(self):
         table = self.ui.tableWidget
         files = self.school.get_images()
-        print(files)
+        # print(files)
         table.setColumnCount(3)
         table.setRowCount(len(files))
         table.setHorizontalHeaderLabels(['Letter', 'File', 'Result'])
-        #table.horizontalHeaderItem(0).setTextAlignment(Qt.AlignLeft)
-        #table.horizontalHeaderItem(1).setTextAlignment(Qt.AlignHCenter)
-        #table.horizontalHeaderItem(2).setTextAlignment(Qt.AlignRight)
         for i, f in enumerate(files):
             name = basename(f)
             print([name.split('.')[0], name, ''])
@@ -108,12 +105,14 @@ class Window(QMainWindow):
 
     def start_study(self):
         table = self.ui.tableWidget
-        for y in range(0, 100):
+        rounds = self.ui.spinBox.value()
+        for y in range(0, int(rounds)):
             for x in range(0, table.rowCount()):
                 # letter = table.item(x, 0)
                 image_name = table.item(x, 1).text()
                 self.school.study(image_name)
                 # print(letter.text())
+            self.ui.label_4.setText(str(y))
 
 
 

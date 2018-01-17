@@ -91,7 +91,7 @@ class Network(object):
         for letter in self.neurons:
             neuron = self.neurons[letter]
             letters.append(letter)
-            result.append(abs(neuron.transfer(image_data)))
+            result.append(neuron.transfer(image_data))
         max_item = max(result)
         result_letter = letters[result.index(max_item)]
         return max_item, result_letter
@@ -126,7 +126,7 @@ class Network(object):
         self.set_options(data)
 
     def set_options(self, options):
-        print(options)
+        # print(options)
         for key in self.default_options:
             self.__dict__[key] = options[key] if key in options else self.__dict__[key]
 

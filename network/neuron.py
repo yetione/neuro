@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-from random import randint
+from random import randint, random
 from math import exp, log, tanh
 
 
@@ -21,7 +21,7 @@ class Neuron:
         for r in range(0, self.height):
             self.weight.append([])
             for c in range(0, self.width):
-                self.weight[r].append(randint(0, 10000000)/10000000.0)
+                self.weight[r].append(random()/100.0)
 
     def transfer_hard(self, input):
         power = 0
@@ -38,13 +38,21 @@ class Neuron:
         return result
 
     def transfer(self, input):
+        """
+        :param input: array
+        :return: float
+        """
         power = self.sum(input)
-        power = power / 100000000000.0
+        power = power / 100.0
         return self.sigmod(power)
         # return self.sigmod(power)
         # return power/1000.0
 
     def sigmod(self, power):
+        """
+        :param power: float
+        :return: float
+        """
         return 1.0 / (1.0 + exp(-1.0 * power))
 
     def htan(self, power):

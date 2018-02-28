@@ -81,7 +81,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.addWidget(self.pushButton_4)
         self.spinBox = QtWidgets.QSpinBox(self.horizontalLayoutWidget)
         self.spinBox.setMinimum(1)
-        self.spinBox.setMaximum(1000)
+        self.spinBox.setMaximum(10000000)
         self.spinBox.setObjectName("spinBox")
         self.horizontalLayout_4.addWidget(self.spinBox)
         self.formLayout.setLayout(6, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_4)

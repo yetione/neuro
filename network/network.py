@@ -10,7 +10,6 @@ from os import path
 
 
 class Network(object):
-
     default_symbols = '0123456789'
 
     default_save_file = 'data.p'
@@ -32,7 +31,8 @@ class Network(object):
             pixel_map.append([])
             for c in range(0, self.neuronWidth):
                 pixel_data = image.pixel(r, c)
-                pixel_data = pixel_data - int('0xff000000', 16)
+                pixel_data = pixel_data - int('0xff000000', 16)  # remove alpha data
+                pixel_data = pixel_data / 100000000.0   # divide to operate with values, then less then one
                 # pixel_color = QColor(pixel_data)
                 # print(pixel_color.red(), pixel_color.green(), pixel_color.blue(), pixel_color.alpha())
                 # pixel_map[r].append(pixel_data[0] + pixel_data[1] + pixel_data[2])
@@ -58,7 +58,6 @@ class Network(object):
         self.neurons[correctAnswer] = 1
         correctOutput = []
 
-
         output = self.handle_hard(input)
         while not self.compare_array(correctOutput, output):
             for x in range(0, len(self.neurons)):
@@ -68,7 +67,14 @@ class Network(object):
 
     def study(self, image_data, correct_answer):
         answer = self.get_answer(image_data)
-        self.neurons[answer[1]].change_weight(image_data, -0.002 if answer[1] != correct_answer else 0.005)
+        if answer[1] == correct_answer:
+            self.neurons[answer[1]].change_weight(image_data, 0.001)
+            print('network give correct answer '+str(answer[1])+ ' '+str(answer[0]))
+        else:
+            self.neurons[answer[1]].change_weight(image_data, -0.002)
+            self.neurons[correct_answer].change_weight(image_data, 0.005)
+            print('network think is '+str(answer[1])+' but it '+correct_answer)
+        #self.neurons[answer[1]].change_weight(image_data, -0.0002 if answer[1] != correct_answer else 0.0005)
         return True
         for letter in self.neurons:
             neuron = self.neurons[letter]
@@ -82,7 +88,7 @@ class Network(object):
                 neuron.change_weight(image_data, -0.0002)
             if neuron_result != 1 and letter == correct_answer:
                 neuron.change_weight(image_data, 0.0005)
-            #print(neuron.weight)
+            # print(neuron.weight)
             # print(neuron)
 
     def get_answer(self, image_data):
@@ -116,7 +122,7 @@ class Network(object):
         if path.exists(self.memory_file):
             self.load_from_file()
         else:
-            #self.set_options(self.default_options)
+            # self.set_options(self.default_options)
             symbols = list(self.default_symbols)
             for symbol in symbols:
                 self.add_neuron(symbol)
@@ -135,4 +141,3 @@ class Network(object):
         for key in self.default_options:
             data[key] = self.__dict__[key]
         cPickle.dump(data, open(self.memory_file, 'wb'))
-

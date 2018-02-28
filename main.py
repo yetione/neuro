@@ -16,6 +16,7 @@ from school import School
 from ui.main_window import Ui_MainWindow
 
 from random import randint
+from time import time
 
 
 class Window(QMainWindow):
@@ -104,6 +105,7 @@ class Window(QMainWindow):
         self.update_images_table()
 
     def start_study(self):
+        t = time()
         table = self.ui.tableWidget
         rounds = self.ui.spinBox.value()
         for y in range(0, int(rounds)):
@@ -113,6 +115,7 @@ class Window(QMainWindow):
                 self.school.study(image_name)
                 # print(letter.text())
             self.ui.label_4.setText(str(y))
+            print('Time spent '+str(time()-t))
 
 
 

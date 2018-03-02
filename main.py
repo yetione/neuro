@@ -136,6 +136,7 @@ class Window(QMainWindow):
         results = []
         for y in range(0, int(rounds)):
             currentResuls = {'correct': 0,'invalid': 0}
+            t1 = time()
             for x in range(0, table.rowCount()):
                 # letter = table.item(x, 0)
                 image_name = table.item(x, 1).text()
@@ -145,7 +146,7 @@ class Window(QMainWindow):
                     currentResuls['invalid'] += 1
                 # print(letter.text())
             self.ui.label_4.setText(str(y))
-            print('Time spent '+str(time()-t)+' correct results %i; invalid results %i' % (currentResuls['correct'],
+            print('Total time '+str(time()-t)+'; Time spent '+str(time()-t1)+'; Correct results %i; Invalid results %i' % (currentResuls['correct'],
                                                                                            currentResuls['invalid']))
             results.append(currentResuls)
         print(results)

@@ -64,7 +64,7 @@ class School:
         qImage = QImage()
         qImage.loadFromData(image_content)
         image_data = self.network.read_image(qImage)
-        self.network.study(image_data, letter)
+        return self.network.study(image_data, letter)
 
         # print(letter)
         # print(image_path)

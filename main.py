@@ -133,14 +133,22 @@ class Window(QMainWindow):
         t = time()
         table = self.ui.tableWidget
         rounds = self.ui.spinBox.value()
+        results = []
         for y in range(0, int(rounds)):
+            currentResuls = {'correct': 0,'invalid': 0}
             for x in range(0, table.rowCount()):
                 # letter = table.item(x, 0)
                 image_name = table.item(x, 1).text()
-                self.school.study(image_name)
+                if self.school.study(image_name):
+                    currentResuls['correct'] += 1
+                else:
+                    currentResuls['invalid'] += 1
                 # print(letter.text())
             self.ui.label_4.setText(str(y))
-            print('Time spent '+str(time()-t))
+            print('Time spent '+str(time()-t)+' correct results %i; invalid results %i' % (currentResuls['correct'],
+                                                                                           currentResuls['invalid']))
+            results.append(currentResuls)
+        print(results)
         self.save_network()
 
 

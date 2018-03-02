@@ -71,7 +71,7 @@ class Network(object):
 
             #self.neurons[answer[1]].add_weight(image_data, 0.002)
             self.neurons[answer[1]].change_weight(image_data, 0.0002)
-            print('network give correct answer '+str(answer[1])+ ' '+str(answer[0]))
+            #print('network give correct answer '+str(answer[1])+ ' '+str(answer[0]))
             return True
         else:
             #self.neurons[answer[1]].dec_weight(image_data, 0.02)

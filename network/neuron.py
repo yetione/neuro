@@ -61,7 +61,32 @@ class Neuron:
     def change_weight(self, input, dif):
         for r in range(0, self.height):
             for c in range(0, self.width):
+                if input[r][c] == (256**3-1)/100000000.0:
+                    self.weight[r][c] += dif-0.00001
                 self.weight[r][c] += dif
                 #if self.weight[r][c] < 0:
                 #    self.weight[r][c] = 0
         return True
+
+    def add_weight(self, input, val):
+        for r in range(0, self.height):
+            for c in range(0, self.width):
+                if input[r][c] == (256**3-1)/100000000.0:
+                    self.weight[r][c] += 0.0003
+                else:
+                    self.weight[r][c] += 0.0005
+                #if self.weight[r][c] < 0:
+                #    self.weight[r][c] = 0
+        return True
+
+    def dec_weight(self, input, val):
+        for r in range(0, self.height):
+            for c in range(0, self.width):
+                self.weight[r][c] -= 0.003
+                #if self.weight[r][c] < 0:
+                #    self.weight[r][c] = 0
+        return True
+
+
+
+

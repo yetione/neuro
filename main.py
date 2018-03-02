@@ -10,6 +10,7 @@ from PyQt5 import QtCore
 from time import time
 from os import walk, path
 from ntpath import basename
+from multiprocessing import Process, Queue, Pool
 
 from network.network import Network
 from school import School
@@ -20,6 +21,9 @@ from time import time
 
 
 class Window(QMainWindow):
+
+    letter_dbl_connected = False
+
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
         self.ui = Ui_MainWindow()
@@ -34,6 +38,8 @@ class Window(QMainWindow):
 
         self.network = Network()
         self.school = School(self.network)
+        self.queue = Queue()
+        self.update_images_table()
 
     def save_network(self):
         self.school.network.save_to_file()
@@ -42,6 +48,17 @@ class Window(QMainWindow):
         self.school.network.load_from_file()
 
     def generate_random_image(self):
+        try:
+            count = int(self.ui.lineEdit_2.text())
+        except ValueError:
+            count = 12
+        fonts = self.get_random_fonts(count)
+        start_time = time()
+        with Pool(processes=5) as pool:
+            results = pool.map(self.school.generate_random_image, fonts)
+        self.update_images_table()
+        print('generate %i images '%len(list(results)), time()-start_time)
+        return
         current_font = self.ui.fontComboBox.currentFont()
         length = self.ui.fontComboBox.count()
         try:
@@ -55,24 +72,32 @@ class Window(QMainWindow):
         self.ui.fontComboBox.setFont(current_font)
         self.update_images_table()
 
+    def get_random_fonts(self, count):
+        length = self.ui.fontComboBox.count()
+        result = []
+        for x in range(0, count):
+            self.ui.fontComboBox.setCurrentIndex(randint(0, length))
+            result.append(self.ui.fontComboBox.currentFont().family())
+        return result
 
     def update_images_table(self):
         table = self.ui.tableWidget
         files = self.school.get_images()
-        # print(files)
         table.setColumnCount(3)
         table.setRowCount(len(files))
         table.setHorizontalHeaderLabels(['Letter', 'File', 'Result'])
         for i, f in enumerate(files):
             name = basename(f)
-            print([name.split('.')[0], name, ''])
             table.setItem(i, 0, QTableWidgetItem(name.split('.')[0]))
             table.setItem(i, 1, QTableWidgetItem(name))
             table.setItem(i, 2, QTableWidgetItem(''))
             item = table.itemAt(i, 0)
         table.resizeColumnsToContents()
+
+        if self.letter_dbl_connected:
+            table.itemDoubleClicked.disconnect(self.letter_double_click)
         table.itemDoubleClicked.connect(self.letter_double_click)
-        pass
+        self.letter_dbl_connected = True
 
     def letter_double_click(self, item):
         letterCell = self.ui.tableWidget.item(item.row(), 0)
@@ -116,6 +141,7 @@ class Window(QMainWindow):
                 # print(letter.text())
             self.ui.label_4.setText(str(y))
             print('Time spent '+str(time()-t))
+        self.save_network()
 
 
 

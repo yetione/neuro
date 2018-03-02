@@ -68,12 +68,16 @@ class Network(object):
     def study(self, image_data, correct_answer):
         answer = self.get_answer(image_data)
         if answer[1] == correct_answer:
-            self.neurons[answer[1]].change_weight(image_data, 0.001)
+
+            #self.neurons[answer[1]].add_weight(image_data, 0.002)
+            self.neurons[answer[1]].change_weight(image_data, 0.0002)
             print('network give correct answer '+str(answer[1])+ ' '+str(answer[0]))
         else:
-            self.neurons[answer[1]].change_weight(image_data, -0.002)
-            self.neurons[correct_answer].change_weight(image_data, 0.005)
-            print('network think is '+str(answer[1])+' but it '+correct_answer)
+            #self.neurons[answer[1]].dec_weight(image_data, 0.02)
+            self.neurons[answer[1]].change_weight(image_data, -0.0002)
+            #self.neurons[correct_answer].add_weight(image_data, 0.03)
+            self.neurons[correct_answer].change_weight(image_data, 0.0003)
+            # print('network think is '+str(answer[1])+' but it '+correct_answer)
         #self.neurons[answer[1]].change_weight(image_data, -0.0002 if answer[1] != correct_answer else 0.0005)
         return True
         for letter in self.neurons:
